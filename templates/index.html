@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Management System</title>
+    <style>
+        /* ... [Keep all the existing styles] ... */
+:root {
+            --primary-color: #00ffff;
+            --secondary-color: #ff00ff;
+            --background-color: #1a1a2e;
+            --text-color: #ffffff;
+            --card-color: #16213e;
+            --hover-color: #0f3460;
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        header {
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            padding: 20px;
+            text-align: center;
+            font-size: 2em;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .content {
+            flex-grow: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .options {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            max-width: 800px;
+            width: 100%;
+        }
+
+        .option {
+            background-color: var(--card-color);
+            border: 2px solid var(--primary-color);
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .option:hover {
+            transform: scale(1.05);
+            background-color: var(--hover-color);
+            box-shadow: 0 0 20px var(--primary-color);
+        }
+
+        .option::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, var(--primary-color), transparent);
+            transform: rotate(45deg);
+            transition: all 0.5s ease;
+            opacity: 0;
+        }
+
+        .option:hover::before {
+            top: -100%;
+            left: -100%;
+            opacity: 0.3;
+        }
+
+        .option h2 {
+            margin: 0;
+            font-size: 1.5em;
+            position: relative;
+            z-index: 1;
+        }
+
+        .page {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            padding: 20px;
+        }
+
+        .page h2 {
+            margin-bottom: 20px;
+            font-size: 2em;
+            text-align: center;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        input, button {
+            padding: 10px;
+            border-radius: 5px;
+            border: none;
+            background-color: var(--card-color);
+            color: var(--text-color);
+            font-size: 1em;
+        }
+
+        button {
+            background-color: var(--primary-color);
+            color: var(--background-color);
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: var(--secondary-color);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid var(--primary-color);
+        }
+
+        th {
+            background-color: var(--card-color);
+        }
+
+        .back-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            padding: 10px 20px;
+            background-color: var(--primary-color);
+            color: var(--background-color);
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .back-button:hover {
+            background-color: var(--secondary-color);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            Student Management System
+        </header>
+        <div class="content">
+            <div class="options">
+                <div class="option" onclick="showPage('add')">
+                    <h2>Add Student</h2>
+                </div>
+                <div class="option" onclick="showPage('update')">
+                    <h2>Update Student</h2>
+                </div>
+                <div class="option" onclick="showPage('delete')">
+                    <h2>Delete Student</h2>
+                </div>
+                <div class="option" onclick="showPage('display')">
+                    <h2>Display Students</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="addPage" class="page">
+        <h2>Add New Student</h2>
+        <form id="addForm">
+            <input type="text" id="addFirstName" placeholder="First Name" required>
+            <input type="text" id="addLastName" placeholder="Last Name" required>
+            <input type="email" id="addEmail" placeholder="Email" required>
+            <button type="submit">Add Student</button>
+        </form>
+        <button class="back-button" onclick="showHomePage()">Back</button>
+    </div>
+
+    <div id="updatePage" class="page">
+        <h2>Update Student</h2>
+        <form id="updateForm">
+            <input type="number" id="updateId" placeholder="Student ID" required>
+            <input type="text" id="updateFirstName" placeholder="First Name" required>
+            <input type="text" id="updateLastName" placeholder="Last Name" required>
+            <input type="email" id="updateEmail" placeholder="Email" required>
+            <button type="submit">Update Student</button>
+        </form>
+        <button class="back-button" onclick="showHomePage()">Back</button>
+    </div>
+
+    <div id="deletePage" class="page">
+        <h2>Delete Student</h2>
+        <form id="deleteForm">
+            <input type="number" id="deleteId" placeholder="Student ID" required>
+            <button type="submit">Delete Student</button>
+        </form>
+        <button class="back-button" onclick="showHomePage()">Back</button>
+    </div>
+
+    <div id="displayPage" class="page">
+        <h2>Student List</h2>
+        <table id="studentTable">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Email</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Student data will be inserted here -->
+            </tbody>
+        </table>
+        <button class="back-button" onclick="showHomePage()">Back</button>
+    </div>
+
+    <script>
+        function showPage(pageId) {
+            document.querySelector('.container').style.display = 'none';
+            document.getElementById(pageId + 'Page').style.display = 'flex';
+            if (pageId === 'display') {
+                fetchStudents();
+            }
+        }
+
+        function showHomePage() {
+            document.querySelector('.container').style.display = 'flex';
+            document.querySelectorAll('.page').forEach(page => page.style.display = 'none');
+        }
+
+        document.getElementById('addForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const data = {
+                first_name: document.getElementById('addFirstName').value,
+                last_name: document.getElementById('addLastName').value,
+                email: document.getElementById('addEmail').value
+            };
+            fetch('/add_student', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(result => {
+                alert(result.message);
+                showHomePage();
+            })
+            .catch(error => alert('Error: ' + error));
+        });
+
+        document.getElementById('updateForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const data = {
+                id: document.getElementById('updateId').value,
+                first_name: document.getElementById('updateFirstName').value,
+                last_name: document.getElementById('updateLastName').value,
+                email: document.getElementById('updateEmail').value
+            };
+            fetch('/update_student', {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(result => {
+                alert(result.message);
+                showHomePage();
+            })
+            .catch(error => alert('Error: ' + error));
+        });
+
+        document.getElementById('deleteForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const id = document.getElementById('deleteId').value;
+            fetch(`/delete_student/${id}`, { method: 'DELETE' })
+            .then(response => response.json())
+            .then(result => {
+                alert(result.message);
+                showHomePage();
+            })
+            .catch(error => alert('Error: ' + error));
+        });
+
+        function fetchStudents() {
+            fetch('/students')
+            .then(response => response.json())
+            .then(students => {
+                const tableBody = document.querySelector('#studentTable tbody');
+                tableBody.innerHTML = '';
+                students.forEach(student => {
+                    const row = tableBody.insertRow();
+                    row.insertCell(0).textContent = student.id;
+                    row.insertCell(1).textContent = student.first_name;
+                    row.insertCell(2).textContent = student.last_name;
+                    row.insertCell(3).textContent = student.email;
+                });
+            })
+            .catch(error => alert('Error fetching students: ' + error));
+        }
+    </script>
+</body>
+</html>
